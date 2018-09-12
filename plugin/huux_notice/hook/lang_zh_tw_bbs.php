@@ -38,3 +38,4 @@
 'notice_message_replytoyou'=>'了妳的',
 'notice_message_replytoyou_at'=>'了妳在',
 'notice_message_replytoyou_for'=>'中的評論',
+'notice_my_delete_thispagemessage'=>'刪除本頁消息',

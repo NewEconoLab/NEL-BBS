@@ -1,4 +1,7 @@
 <script>
+$('a[data-active="my-notice"]').addClass('active');
+</script>
+<script>
 
 // 标记已读
 $('.noticelist .notice .readbtn').on('click', function() { 
@@ -40,8 +43,7 @@ $('.noticelist .notice .deletebtn').on('click', function() {
 // 全部已读
 $('#readall').on('click', function() {   
 	var jthis = $(this);
-	var juid = jthis.data('uid');
-	var postdata = {act: 'readall', uid: juid};
+	var postdata = {act: 'readall'};
 	if(!jthis.hasClass('readall')) return false;
 	$.xpost(xn.url('my-notice'), postdata, function(code, message) {
 		if(code != 0) return $.alert(message);
@@ -50,6 +52,23 @@ $('#readall').on('click', function() {
 		jthis.removeClass('readall').text(message.b);
 		$('#nav-usernotice').removeClass('current');//头部导航铃铛状态切换
 	});	
+});
+// 删除本页信息
+var jdelete = $('#delete');
+jdelete.on('click', function() {   
+	var text = $(this).data('confirm-text');
+	$.confirm(text, function() {
+		var jthis = $(this);
+		var nidarr = $('.noticelist').data('nidarr');
+		var postdata = {act: 'deletearr', nidarr: nidarr};
+		$.xpost(xn.url('my-notice'), postdata, function(code, message) {
+				jdelete.button(message);
+				setTimeout(function() {
+					window.location.reload();
+				}, 1000);
+		});	
+	});
+	return false;
 })
 
 </script>

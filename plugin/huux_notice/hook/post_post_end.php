@@ -7,14 +7,15 @@
 	$recvuid = $thread['uid'];
 
 	// hook notice_post_post_end_reply.php
-
-	notice_send($uid, $recvuid, $notice_message, 2);
+	$recvuid != $quotepost['uid'] AND notice_send($uid, $recvuid, $notice_message, 2); //$quotepost['uid']可能是null，但不影响逻辑
 
 	// 引用
 	if(!empty($quotepid) && $quotepid > 0) {
 
 		// hook notice_post_post_end_quote.php
-		$notice_quote_message = '<div class="comment-info"><a class="mr-1 text-grey" href="'.url("thread-$thread[tid]").'#'.$pid.'">'.lang('notice_lang_reply').'</a>'.lang('notice_message_replytoyou_at').'<a href="'.url("thread-$thread[tid]").'">《'.$thread['subject'].'》</a>'.lang('notice_message_replytoyou_for').'</div><div class="quote-comment">'.notice_substr($quotepost['message'], 40, FALSE).'</div><div class="reply-comment"><a href="'.url("thread-$thread[tid]").'#'.$pid.'">'.notice_substr($message, 40, FALSE).'</a></div>';
+
+		 
+		 $notice_quote_message = '<div class="comment-info"><a class="mr-1 text-grey" href="'.url("thread-$thread[tid]").'#'.$pid.'">'.lang('notice_lang_reply').'</a>'.lang('notice_message_replytoyou_at').'<a href="'.url("thread-$thread[tid]").'">《'.$thread['subject'].'》</a>'.lang('notice_message_replytoyou_for').'</div><div class="quote-comment">'.notice_substr($quotepost['message'], 40, FALSE).'</div><div class="reply-comment"><a href="'.url("thread-$thread[tid]").'#'.$pid.'">'.notice_substr($message, 40, FALSE).'</a></div>';
 
 
 

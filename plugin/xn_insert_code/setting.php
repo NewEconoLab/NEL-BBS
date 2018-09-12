@@ -16,6 +16,7 @@ if($method == 'GET') {
 	$setting['index_main_start_htm'] = setting_get('index_main_start_htm');
 	$setting['index_site_brief_after_htm'] = setting_get('index_site_brief_after_htm');
 	$setting['thread_user_after_htm'] = setting_get('thread_user_after_htm');
+	$setting['thread_message_after_htm'] = setting_get('thread_message_after_htm');
 	
 	include _include(APP_PATH.'plugin/xn_insert_code/setting.htm');
 	
@@ -28,6 +29,7 @@ if($method == 'GET') {
 	setting_set('index_main_start_htm', param('index_main_start_htm', '', FALSE));
 	setting_set('index_site_brief_after_htm', param('index_site_brief_after_htm', '', FALSE));
 	setting_set('thread_user_after_htm', param('thread_user_after_htm', '', FALSE));
+	setting_set('thread_message_after_htm', param('thread_message_after_htm', '', FALSE));
 	
 	message(0, '修改成功');
 }

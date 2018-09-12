@@ -1,6 +1,6 @@
 'notice'=>'消息',
 'notice_admin_notice_list'=>'消息列表',
-'notice_admin_send_notice'=>'发送通知',
+'notice_admin_send_notice'=>'发送系统通知',
 'notice_admin_send_notice_message'=>'内容',
 'notice_admin_send_notice_uid'=>'用户ID',
 'notice_admin_send_notice_failed'=>'发送通知失败',
@@ -38,3 +38,4 @@
 'notice_message_replytoyou'=>'了你的',
 'notice_message_replytoyou_at'=>'了你在',
 'notice_message_replytoyou_for'=>'中的评论',
+'notice_my_delete_thispagemessage'=>'删除本页消息',

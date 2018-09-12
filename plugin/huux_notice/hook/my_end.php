@@ -25,12 +25,9 @@ elseif($action == 'notice') {
 		$act = param('act');
 		if($act == 'readall') {
 			// 全部已读
-		   	$recvuid = param('uid');
-		    	$recvuid != $uid AND message(-1, lang('notice_my_error'));
-
-		    	$r = notice_update_by_recvuid($recvuid, array('isread'=>1));
-		    	$r === FALSE AND message(-1, lang('notice_my_update_failed'));
-		    	message(0, array('a' => lang('notice_my_update_readed'),'b' => lang('notice_my_update_allread')));
+		   	$r = notice_update_by_recvuid($uid, array('isread'=>1));
+	    	$r === FALSE AND message(-1, lang('notice_my_update_failed'));
+	    	message(0, array('a' => lang('notice_my_update_readed'),'b' => lang('notice_my_update_allread')));
 		    
 		} elseif($act == 'readone') {
            	// 设置已读
@@ -52,7 +49,21 @@ elseif($action == 'notice') {
 
 			$r = notice_delete($nid);
 			$r === FALSE AND message(-1, lang('notice_my_update_failed'));
-			message(0, lang('notice_my_update_sucessfully'));
+			message(0, lang('notice_delete_notice_sucessfully'));
+
+		} elseif($act == 'deletearr') {
+			// 多条删除
+			$nidarr = param('nidarr', array(0));
+			empty($nidarr) AND message(-1, lang('notice_my_error'));
+
+			$noticelist = notice_find_by_nids($nidarr);
+
+			foreach($noticelist as &$notice) {
+				$nid = $notice['nid'];
+				$recvuid = $notice['recvuid'];
+				$uid == $recvuid AND notice_delete($nid);
+			}
+			message(0, lang('notice_delete_notice_sucessfully'));
 
 		} else {
 			// 清空所有暂时不添加

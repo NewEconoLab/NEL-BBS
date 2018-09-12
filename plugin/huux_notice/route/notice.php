@@ -31,7 +31,7 @@ if($action == 'create') {
 		$recvuid_check = user__read($recvuid);
 		$recvuid_check === FALSE AND message('recvuid', lang('notice_admin_send_notice_user_empty'));
 		
-		$nid = notice_send($uid, $recvuid, $message, $type = 1); // 1:通知
+		$nid = notice_send($uid, $recvuid, $message, 3); // 3:系统通知
 		$nid === FALSE AND message(-1, lang('notice_admin_send_notice_failed'));
 		
 		message(0, lang('notice_admin_send_notice_sucessfully'));
@@ -56,7 +56,6 @@ if($action == 'create') {
 	$orderby = 'nid';
 
 	$notice_menu = include _include(APP_PATH.'plugin/huux_notice/conf/notice_menu.conf.php');
-	
 	$noticelist = notice_find($cond, $page, $pagesize);
 	$pagination = pagination(url("notice-list-{page}"), $notices, $page, $pagesize);
 

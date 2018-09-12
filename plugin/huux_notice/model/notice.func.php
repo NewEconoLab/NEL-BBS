@@ -159,6 +159,14 @@ function notice_find($cond = array(), $page = 1, $pagesize = 20) {
 	return $noticelist;
 }
 
+function notice_find_by_nids($nids, $order = array('nid'=>-1)) {
+	if(!$nids) return array();
+	$noticelist = db_find('notice', array('nid'=>$nids), $order, 1, 1000, 'nid');
+	if($noticelist) foreach($noticelist as &$notice) notice_format($notice);
+
+	return $noticelist;
+}
+
 // 获取消息前格式化信息
 function notice_format(&$notice){
     
@@ -177,9 +185,9 @@ function notice_format(&$notice){
 
 	!isset($notice_menu[$notice['type']]) AND $notice['type'] = 99;
 
-	$notice['name'] = $notice_menu[$notice['type']]['name'];
-	$notice['class'] = $notice_menu[$notice['type']]['class'];
-	$notice['icon'] = $notice_menu[$notice['type']]['icon'];
+	$notice['name'] = isset($notice_menu[$notice['type']]['name']) ? $notice_menu[$notice['type']]['name'] :'message';
+	$notice['class'] = isset($notice_menu[$notice['type']]['class']) ? $notice_menu[$notice['type']]['class'] :'info';
+	$notice['icon'] = isset($notice_menu[$notice['type']]['icon']) ? $notice_menu[$notice['type']]['icon'] :'';
 
 }
 
