@@ -1,0 +1,117 @@
+<?php include _include(APP_PATH.'view/htm/header.inc.htm');?>
+
+<div class="card">
+	<div class="card-header"><?php echo lang('haya_thread_merge_name'); ?></div>
+	
+	<div class="card-body ajax-body">
+		<form action="<?php echo url("mod-merge");?>" method="post" id="mod_merge_form">
+			<div class="form-group row">
+				<div class="col-12">
+					<?php echo lang('haya_thread_merge_thread_count_tip'); ?>：
+					<span class="total font-weight-bold text-danger"></span> <?php echo lang('haya_thread_merge_thread_piece_tip');?>
+				</div>
+			</div>
+			
+			<div class="form-group row">
+				<div class="col-12">
+					<div class="haya-thread-merge-radios-title">
+						<?php echo lang('haya_thread_merge_last_thread_tip'); ?>：
+					</div>
+					<div class="haya-thread-merge-radios"></div>
+				</div>
+			</div>
+			
+			<div class="form-group row">
+				<div class="col-12">
+					<?php echo lang('haya_thread_merge_other_thread_tip'); ?>：
+					<input type="text" id="haya_thread_merge_other_tids" name="haya-thread-merge-other-tids" value="" placeholder="<?php echo lang('haya_thread_merge_other_thread_example_tip');?>" class="form-control">
+				</div>
+			</div>
+			
+			<div class="form-group row d-none haya-thread-merge-error">
+				<div class="col-12">
+					<div class="alert alert-danger alert-custom alert-dismissible mb-0">
+						<i class="icon icon-times-circle mr-2"></i>
+						<span class="haya-thread-merge-error-tip"></span>
+					</div>
+				</div>
+			</div>
+			
+			<div class="form-group row">
+				<div class="col-12 text-right">
+					<button type="submit" class="btn btn-primary mr-2" data-loading-text="<?php echo lang('submiting');?>..."><?php echo lang('confirm');?></button>
+					
+					<button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true"><?php echo lang('close');?></span>
+					</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+
+<?php include _include(APP_PATH.'view/htm/footer.inc.htm');?>
+
+<script ajax-eval="true">
+
+// 接受传参
+var args = args || {jmodal: null, callback: null, arg: null};
+var jmodal = args.jmodal;
+var callback = args.callback;
+var arg = args.arg;
+var jthreadlist = $(arg);  // .threadlist
+var tidarr = jthreadlist.find('input[name="modtid"]').checked();
+
+var jform = $('#mod_merge_form');
+var jsubmit = jform.find('button[type="submit"]');
+var jcancel = jform.find('button[type="button"]');
+var jtotal = jform.find('span.total');
+jtotal.text(tidarr.length);
+
+var haya_thread_titles = {};
+if (tidarr.length > 0) {
+	for (var i = 0; i < tidarr.length; i ++) {
+		var tid = tidarr[i];
+		var title = $(".haya-thread-merge-"+tid).attr("data-title");
+		
+		haya_thread_titles[tid] = title;
+	};
+} else {
+	haya_thread_titles[0] = '<?php echo lang('haya_thread_merge_must_have_thread_tip'); ?>';
+}
+
+var radios = xn.form_select('haya-thread-merge', haya_thread_titles, tidarr[0]);
+var jradios = jform.find('.haya-thread-merge-radios');
+jradios.html(radios);
+
+jform.on('submit', function() {
+	jform.reset();
+	jsubmit.button('loading');
+	
+	var tids = xn.implode('_', tidarr);
+	var merge_id = jform.find('select[name="haya-thread-merge"] option:selected').val();
+	var other_tids = jform.find('input[name="haya-thread-merge-other-tids"]').val();
+	var postdata = {merge_id: merge_id, tids: tids, other_tids: other_tids};
+	$.xpost(xn.url('mod-merge-'+merge_id), postdata, function(code, message) {
+		if (code == 0) {
+			jsubmit.button(message);
+			setTimeout(function() {
+				if (jmodal) jmodal.modal('dispose');
+				if (callback) callback(message);
+				window.location.reload();
+			}, 1000);
+		} else {
+			jform.find('.haya-thread-merge-error-tip').text(message);
+			jform.find('.haya-thread-merge-error').removeClass("d-none");
+			
+			setTimeout(function() {
+				jform.find('.haya-thread-merge-error').addClass("d-none");
+			}, 5000);
+			
+			jsubmit.button('reset');
+		}
+	});
+	
+	return false;
+});
+</script>

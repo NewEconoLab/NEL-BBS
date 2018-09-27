@@ -1,0 +1,33 @@
+<?php include _include(ADMIN_PATH.'view/htm/header.inc.htm'); ?>
+
+<div class="row">
+	<div class="col-sm-12">
+		
+		<div class="card">
+			<div class="card-body">
+				<h4 class="card-title"><?php echo lang('haya_thread_merge_name'); ?></h4>
+				
+				<hr class="mt-0"/>
+				
+				<div class="form-group row mb-3">
+					<div class="col-sm-12">
+						<?php echo lang('haya_thread_merge_setting_content'); ?>
+					</div>
+				</div>
+		
+				<div class="form-group row mt-4">
+					<div class="col-sm-2">
+						<a role="button" class="btn btn-secondary btn-block mb-3" href="javascript:history.back();"><?php echo lang('back'); ?></a>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+</div>
+
+<?php include _include(ADMIN_PATH.'view/htm/footer.inc.htm'); ?>
+
+<script>
+$('#nav li.nav-item-plugin').addClass('active');
+</script>
